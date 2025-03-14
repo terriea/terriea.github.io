@@ -19,24 +19,23 @@
   <meta name="author" content="Terriea">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在使用GitHub SSH Publickey时在我使用Github SSH Publickey时经常需要输入一条命令 1ssh -T git@github.com 这条命令的目的是为了检验你的SSH Publickey有没有正确上传至Github的服务器，是一条非常实用的命令。如果成功则显示 12ssh -T git@github.com&gt; Hi &lt;your_username&gt;">
+    <meta name="description" content="在没有Risc-v架构的开发板的情况下，想要使用risc-v架构的系统，这就可以用到qemu这个虚拟化工具。qemu工具可以使用-kernel选项来启动系统，所以我的计划如下。不要直接复制！  准备 qemu环境 Linux内核（Risc-v） 系统的rootfs  环境的安装与下载既然需要编译Linux的内核，我的建议还是在Linux的系统环境下完成这个任务最为方便。首先无论你的发行版是什么，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="记录OpenSSH的一些技巧">
-<meta property="og:url" content="https://terriea.github.io/2024/12/30/Usage-tips-for-OpenSSH/index.html">
+<meta property="og:title" content="制作一个Risc-v系统">
+<meta property="og:url" content="https://terriea.github.io/2025/03/14/Custom-riscv-archlinux/index.html">
 <meta property="og:site_name" content="Terriea&#39;s Blog">
-<meta property="og:description" content="在使用GitHub SSH Publickey时在我使用Github SSH Publickey时经常需要输入一条命令 1ssh -T git@github.com 这条命令的目的是为了检验你的SSH Publickey有没有正确上传至Github的服务器，是一条非常实用的命令。如果成功则显示 12ssh -T git@github.com&gt; Hi &lt;your_username&gt;">
+<meta property="og:description" content="在没有Risc-v架构的开发板的情况下，想要使用risc-v架构的系统，这就可以用到qemu这个虚拟化工具。qemu工具可以使用-kernel选项来启动系统，所以我的计划如下。不要直接复制！  准备 qemu环境 Linux内核（Risc-v） 系统的rootfs  环境的安装与下载既然需要编译Linux的内核，我的建议还是在Linux的系统环境下完成这个任务最为方便。首先无论你的发行版是什么，">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://maxpcimg.cc/i/2024/12/30/6771a9f846b03.png">
-<meta property="article:published_time" content="2024-12-29T18:57:59.000Z">
-<meta property="article:modified_time" content="2025-01-23T16:12:29.612Z">
+<meta property="article:published_time" content="2025-03-14T06:30:22.000Z">
+<meta property="article:modified_time" content="2025-03-14T12:17:59.195Z">
 <meta property="article:author" content="Terriea">
-<meta property="article:tag" content="OpenSSH">
+<meta property="article:tag" content="Risc-v">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://maxpcimg.cc/i/2024/12/30/6771a9f846b03.png">
   
   
   
-  <title>记录OpenSSH的一些技巧 - Terriea&#39;s Blog</title>
+  <title>制作一个Risc-v系统 - Terriea&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -202,7 +201,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="记录OpenSSH的一些技巧"></span>
+            <span id="subtitle" data-typed-text="制作一个Risc-v系统"></span>
           
         </div>
 
@@ -213,8 +212,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-12-30 02:57" pubdate>
-          2024年12月30日 凌晨
+        <time datetime="2025-03-14 14:30" pubdate>
+          2025年3月14日 下午
         </time>
       </span>
     
@@ -225,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          311 字
+          861 字
         
       </span>
     
@@ -236,7 +235,7 @@
         
         
         
-          3 分钟
+          8 分钟
         
       </span>
     
@@ -273,22 +272,39 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">记录OpenSSH的一些技巧</h1>
+            <h1 id="seo-header">制作一个Risc-v系统</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="在使用GitHub-SSH-Publickey时"><a href="#在使用GitHub-SSH-Publickey时" class="headerlink" title="在使用GitHub SSH Publickey时"></a>在使用GitHub SSH Publickey时</h2><p>在我使用Github SSH Publickey时经常需要输入一条命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh -T git@github.com<br></code></pre></td></tr></table></figure>
-<p>这条命令的目的是为了检验你的SSH Publickey有没有正确上传至Github的服务器，是一条非常实用的命令。如果成功则显示</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh -T git@github.com<br>&gt; Hi &lt;your_username&gt;! You<span class="hljs-string">&#x27;ve successfully authenticated...</span><br></code></pre></td></tr></table></figure>
-<h2 id="对于拥有多密钥文件的我来说"><a href="#对于拥有多密钥文件的我来说" class="headerlink" title="对于拥有多密钥文件的我来说"></a>对于拥有多密钥文件的我来说</h2><p>我是OpenSSH的日常使用者，所以我有很多密钥文件。例如：<code>Github</code>，<code>MyUbuntu</code>等等，这也是方便我区分他们具体是为谁提供的。这本身没有什么问题，但是<code>-T</code>参数默认并不读取我自定义的密钥文件，如下所示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh -T git@github.com<br>&gt; Permission denied (publickey).<br></code></pre></td></tr></table></figure>
-<p>根据错误提示，我找到了<a target="_blank" rel="noopener" href="https://docs.github.com/zh/authentication/troubleshooting-ssh/error-permission-denied-publickey?platform=linux">Github Docs当中的这个文章</a>提到的<code>ssh -vT</code>参数，于是我得到这样的输出：<br><img src="https://maxpcimg.cc/i/2024/12/30/6771a9f846b03.png" srcset="/img/loading.gif" lazyload alt="ssh -vT的输出"><br>可以看出，这个命令只能读取默认的命名格式，对此ChatGPT给出一个解决方案：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh -i ~/.ssh/custom_key -T git@github.com<br></code></pre></td></tr></table></figure>
-<p>经过测试是可行的。</p>
-<h2 id="对于后续使用"><a href="#对于后续使用" class="headerlink" title="对于后续使用"></a>对于后续使用</h2><p>ChatGPT同时也指出，为了之后方便使用，你还可以通过编辑 <code>~/.ssh/config</code> 文件来简化连接配置，避免每次都要手动指定密钥文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">Host github.com<br>  HostName github.com<br>  User git<br>  IdentityFile ~/.ssh/custom_key<br></code></pre></td></tr></table></figure>
+                <blockquote>
+<p>在没有Risc-v架构的开发板的情况下，想要使用risc-v架构的系统，这就可以用到qemu这个虚拟化工具。<br>qemu工具可以使用-kernel选项来启动系统，所以我的计划如下。<br><em>不要直接复制！</em></p>
+</blockquote>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li>qemu环境</li>
+<li>Linux内核（Risc-v）</li>
+<li>系统的rootfs</li>
+</ol>
+<h2 id="环境的安装与下载"><a href="#环境的安装与下载" class="headerlink" title="环境的安装与下载"></a>环境的安装与下载</h2><p>既然需要编译Linux的内核，我的建议还是在Linux的系统环境下完成这个任务最为方便。首先无论你的发行版是什么，在软件包管理器里面搜索qemu的包，再用grep过滤结果，将有关于risc-v的包，例如：qemu-system-riscv64等包安装好。<br>这里用Ubuntu举例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt update<br><span class="hljs-built_in">sudo</span> apt install qemu-system-riscv64<br></code></pre></td></tr></table></figure>
+<p>接下来从镜像站下载编译riscv架构需要的gcc编译器，还是Ubuntu举例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt install riscv64-linux-gnu<br></code></pre></td></tr></table></figure>
+<h2 id="编译内核"><a href="#编译内核" class="headerlink" title="编译内核"></a>编译内核</h2><p>从镜像站下载Linux内核的源码包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget https://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v6.x/linux-6.13.tar.xz<br>wget https://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v6.x/linux-6.13.tar.sign <span class="hljs-comment">#用于验证文件的签名</span><br>xz -d linux-6.13.tar.xz <span class="hljs-comment">#先解压，对tar包进行之后的校验</span><br>gpg --keyserver keyserver.ubuntu.com --recv-keys &lt;key <span class="hljs-built_in">id</span>&gt; <span class="hljs-comment">#获得公钥</span><br>gpg --verify linux-6.13.tar.sign<br>...<br>gpg: Good signature from ... <span class="hljs-comment">#显示good signature即可</span><br>tar -xvf linux-6.13.tar<br>...<br></code></pre></td></tr></table></figure>
+<h3 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h3><p>设置环境变量方便确保配置和编译的目标架构为risc-v架构。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> ARCH=riscv<br><span class="hljs-built_in">export</span> CROSS_COMPILE=riscv64-linux-gnu-<br><br><span class="hljs-built_in">sudo</span> apt install flex bison libncurse-dev <span class="hljs-comment">#menucofnig所需的运行环境</span><br></code></pre></td></tr></table></figure>
+<h3 id="配置内核选项与编译"><a href="#配置内核选项与编译" class="headerlink" title="配置内核选项与编译"></a>配置内核选项与编译</h3><p>根据自己的需求来配置内核的选项，使用<code>make menuconfig</code>进入配置菜单。对于不懂的选项，个人建议Google，问Chatgpt等等。我只需保持默认，所以我只需运行<code>make defconfig</code>以及<strong>将所有新特性关闭,因为我没有这个需求，ㄟ( ▔, ▔ )ㄏ</strong><br>配置完成之后就运行<code>make -j$&#123;nproc&#125;</code></p>
+<p>编译完成后，可以在<code>arch/riscv/boot/</code>拿到Image文件</p>
+<h2 id="制作rootfs镜像"><a href="#制作rootfs镜像" class="headerlink" title="制作rootfs镜像"></a>制作rootfs镜像</h2><p>先下载Arch Linux Risc-V的tar包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget https://mirrors.nju.edu.cn/archriscv/images/archriscv-latest.tar.zst<br>tar -xvf archriscv-latest.tar.zst <span class="hljs-comment">#解压</span><br></code></pre></td></tr></table></figure>
+<p>使用<code>dd</code>命令制作块设备</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> qemu-riscv <span class="hljs-comment">#创建一个目录</span><br><span class="hljs-built_in">cd</span> qemu-riscv<br><span class="hljs-built_in">dd</span> <span class="hljs-keyword">if</span>=/dev/zero of=rootfs.ext4 bs=1G count=16G<br>mkfs.ext4 rootfs.ext4 <span class="hljs-comment">#格式化后才能挂载</span><br><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">mkdir</span> /mnt/rootfs <span class="hljs-comment">#创建一个挂载点</span><br><span class="hljs-built_in">sudo</span> mount -t ext4 -o loop rootfs.ext4 /mnt/rootfs <span class="hljs-comment">#使用loop选项来挂在我们创建的块设备</span><br><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">cp</span> /path/to/archriscv-lastest /mnt/rootfs <span class="hljs-comment">#把文件放在目录中 将路径换成你自己的路径</span><br><span class="hljs-built_in">sudo</span> umount /mnt/rootfs <span class="hljs-comment">#卸载块设备</span><br></code></pre></td></tr></table></figure>
+<h2 id="从qemu启动"><a href="#从qemu启动" class="headerlink" title="从qemu启动"></a>从qemu启动</h2><p>将我们编译好的Image文件放到qemu-riscv文件夹下，然后编辑一个bash脚本<code>run-qmeu.sh</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#! /bin/sh</span><br>qemu-system-riscv64 \<br>    -machine virt \   <span class="hljs-comment"># 配置虚拟机类型</span><br>    -kernel ./Image \ <span class="hljs-comment"># 配置从kernel启动 </span><br>    -nographic \<br>    -append <span class="hljs-string">&quot;console=ttyS0 root=/dev/vda rw ip=dhcp &quot;</span> \  <span class="hljs-comment"># kernel启动选项</span><br>    -drive file=./rootfs.ext4,format=raw,<span class="hljs-built_in">id</span>=hd0 \        <br>    -device virtio-blk-device,drive=hd0 \                <span class="hljs-comment"># 配置硬盘</span><br>    -netdev user,<span class="hljs-built_in">id</span>=net0,hostfwd=tcp::10022-:22 \<br>    -device virtio-net-device,netdev=net0                <span class="hljs-comment"># 配置网络</span><br></code></pre></td></tr></table></figure>
+<p>配置执行权限<code>chmod +x run-qemu.sh</code>,从本目录下运行<code>./run-qemu.sh</code></p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>启动之后没有root的密码，也就进不去系统，这是只需要配置一下启动文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#! /bin/sh</span><br>qemu-system-riscv64 \<br>    -machine virt \   <span class="hljs-comment"># 配置虚拟机类型</span><br>    -kernel ./Image \ <span class="hljs-comment"># 配置从kernel启动 </span><br>    -nographic \<br>    -append <span class="hljs-string">&quot;console=ttyS0 root=/dev/vda rw single init=/bin/bash ip=dhcp &quot;</span> \  <span class="hljs-comment"># kernel启动选项,使用single选项进入单用户模式修改启动密码</span><br>    -drive file=./rootfs.ext4,format=raw,<span class="hljs-built_in">id</span>=hd0 \        <br>    -device virtio-blk-device,drive=hd0 \                <span class="hljs-comment"># 配置硬盘</span><br>    -netdev user,<span class="hljs-built_in">id</span>=net0,hostfwd=tcp::10022-:22 \<br>    -device virtio-net-device,netdev=net0                <span class="hljs-comment"># 配置网络</span><br></code></pre></td></tr></table></figure>
+<p>设置完密码之后再将<code>single init=/bin/bash</code>选项删除，这样就能进入正常系统了</p>
 
                 
               </div>
@@ -322,7 +338,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/OpenSSH/" class="print-no-link">#OpenSSH</a>
+        <a href="/tags/Risc-v/" class="print-no-link">#Risc-v</a>
+      
+        <a href="/tags/Linux/" class="print-no-link">#Linux</a>
       
     </div>
   
@@ -334,8 +352,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>记录OpenSSH的一些技巧</div>
-      <div>https://terriea.github.io/2024/12/30/Usage-tips-for-OpenSSH/</div>
+      <div>制作一个Risc-v系统</div>
+      <div>https://terriea.github.io/2025/03/14/Custom-riscv-archlinux/</div>
     </div>
     <div class="license-meta">
       
@@ -347,7 +365,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年12月30日</div>
+          <div>2025年3月14日</div>
         </div>
       
       
@@ -391,15 +409,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/03/14/Custom-riscv-archlinux/" title="制作一个Risc-v系统">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">制作一个Risc-v系统</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2024/12/30/Usage-tips-for-OpenSSH/" title="记录OpenSSH的一些技巧">
+                        <span class="hidden-mobile">记录OpenSSH的一些技巧</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
